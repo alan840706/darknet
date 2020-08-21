@@ -23,13 +23,42 @@ int check_mistakes = 0;
 
 static int coco_ids[] = { 1,2,3,4,5,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,31,32,33,34,35,36,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,70,72,73,74,75,76,77,78,79,80,81,82,84,85,86,87,88,89,90 };
 
+char *insert(char *s1, char *s2, int n)
+{
+    int len1 = 0, len2 = 0, j = 0, len3, k = 0;
+    char s4[30];
+    char *s3 = s4;
+    if (s1 == NULL)
+        return NULL;
+    if (s2 == NULL)
+        return s1;
+    len1 = strlen(s1);
+    len2 = strlen(s2);
+    if(n>len1)
+        return NULL;
+    for (int i = 0; i<n; i++) 
+    { 
+        j++; 
+    }
+    for (int i= 0; i<len1; i++)
+    { 
+        s4[k++] = s1[i];
+    }
+    for (int i = 0; i<len2; i++)
+        s1[j++] = s2[i];
+    for(int i=n;i<len1;i++)
+        s1[j++]=s4[i];
+    s1[j] = '\0';
+    return s1;
+}
 void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, int ngpus, int clear, int dont_show, int calc_map, int mjpeg_port, int show_imgs, int benchmark_layers, char* chart_path)
 {
     list *options = read_data_cfg(datacfg);
     char *train_images = option_find_str(options, "train", "data/train.txt");
     char *valid_images = option_find_str(options, "valid", train_images);
     char *backup_directory = option_find_str(options, "backup", "/backup/");
-    printf("backup_directory: %s",backup_directory);
+    backup_directory=insert(backup_directory, " ", 16);
+    printf("backup_directory: %s\n",backup_directory);
     network net_map;
     if (calc_map) {
         FILE* valid_file = fopen(valid_images, "r");
